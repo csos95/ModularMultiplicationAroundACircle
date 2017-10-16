@@ -44,101 +44,76 @@ func run() {
 	plot()
 
 	replot := false
+	numPointsDelta := 0
+	multiplierDelta := 0
 	for !win.Closed() {
 		win.Clear(colornames.White)
 
+		if win.JustPressed(pixelgl.KeyEscape) {
+			win.SetClosed(true)
+		}
+
+		numPointsDelta = 0
+		multiplierDelta = 0
+
 		// q/a = +/- 100 points
 		if win.JustPressed(pixelgl.KeyQ) {
-			if numPoints < maxPoints {
-				numPoints += 100
-			} else {
-				numPoints = maxPoints
-			}
-			replot = true
+			numPointsDelta += 100
 		}
 		if win.JustPressed(pixelgl.KeyA) {
-			if numPoints >= 100 {
-				numPoints -= 100
-			} else {
-				numPoints = 0
-			}
-			replot = true
+			numPointsDelta -= 100
 		}
 		// w/s = +/- 10  points
 		if win.JustPressed(pixelgl.KeyW) {
-			if numPoints < maxPoints {
-				numPoints += 10
-			} else {
-				numPoints = maxPoints
-			}
-			replot = true
+			numPointsDelta += 10
 		}
 		if win.JustPressed(pixelgl.KeyS) {
-			if numPoints >= 10 {
-				numPoints -= 10
-			} else {
-				numPoints = 0
-			}
-			replot = true
+			numPointsDelta -= 10
 		}
 		// e/d = +/- 1   points
 		if win.JustPressed(pixelgl.KeyE) {
-			if numPoints < maxPoints {
-				numPoints++
-			}
-			replot = true
+			numPointsDelta++
 		}
 		if win.JustPressed(pixelgl.KeyD) {
-			if numPoints > 0 {
-				numPoints--
-			}
-			replot = true
+			numPointsDelta--
 		}
 
 		// u/j = +/- 100 multiplier
 		if win.JustPressed(pixelgl.KeyU) {
-			if multiplier < maxMultiplier {
-				multiplier += 100
-			} else {
-				multiplier = maxMultiplier
-			}
-			replot = true
+			multiplierDelta += 100
 		}
 		if win.JustPressed(pixelgl.KeyJ) {
-			if multiplier >= 100 {
-				multiplier -= 100
-			} else {
-				multiplier = 0
-			}
-			replot = true
+			multiplierDelta -= 100
 		}
 		// i/k = +/- 10  multiplier
 		if win.JustPressed(pixelgl.KeyI) {
-			if multiplier < maxMultiplier {
-				multiplier += 10
-			} else {
-				multiplier = maxMultiplier
-			}
-			replot = true
+			multiplierDelta += 10
 		}
 		if win.JustPressed(pixelgl.KeyK) {
-			if multiplier >= 10 {
-				multiplier -= 10
-			} else {
-				multiplier = 0
-			}
-			replot = true
+			multiplierDelta -= 10
 		}
 		// o/l = +/- 1   multiplier
 		if win.JustPressed(pixelgl.KeyO) {
-			if multiplier < maxMultiplier {
-				multiplier++
+			multiplierDelta++
+		}
+		if win.JustPressed(pixelgl.KeyL) {
+			multiplierDelta--
+		}
+		if numPointsDelta != 0 {
+			numPoints += numPointsDelta
+			if numPoints > 1000 {
+				numPoints = 1000
+			} else if numPoints < 0 {
+				numPoints = 0
 			}
 			replot = true
 		}
-		if win.JustPressed(pixelgl.KeyL) {
-			if multiplier > 0 {
-				multiplier--
+		if multiplierDelta != 0 {
+			multiplier += multiplierDelta
+			if multiplier > 1000 {
+				multiplier = 1000
+			} else if multiplier < 0 {
+				multiplier = 0
 			}
 			replot = true
 		}
